@@ -48,7 +48,7 @@ int main()
 
     // build and compile our shader program
     // ------------------------------------
-    Shader ourShader("../opengl/Shader/shaders/141image.vs", "../opengl/Shader/shaders/141image2.fs");
+    Shader ourShader("../opengl/Shader/shaders/141image.vs", "../opengl/Shader/shaders/141image2Other.fs");
     stbi_set_flip_vertically_on_load(true);
     unsigned int texture1;
     glGenTextures(1, &texture1);
