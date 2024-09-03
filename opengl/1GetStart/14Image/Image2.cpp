@@ -49,7 +49,7 @@ int main()
 
     // build and compile our shader program
     // ------------------------------------
-    Shader ourShader("../opengl/Shader/shaders/141image.vs", "../opengl/Shader/shaders/141image2Control.fs");
+    Shader ourShader("../opengl/Shader/shaders/141image.vs", "../opengl/Shader/shaders/141image2scale.fs");
     stbi_set_flip_vertically_on_load(true);
     unsigned int texture1;
     glGenTextures(1, &texture1);
@@ -79,8 +79,8 @@ int main()
     // 为当前绑定的纹理对象设置环绕、过滤方式
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     // 加载并生成纹理
     data = stbi_load("../image/awesomeface.png", &width, &height, &nrChannels, 0);
     if (data)
