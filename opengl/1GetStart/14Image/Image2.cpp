@@ -12,7 +12,8 @@ void processInput(GLFWwindow *window);
 // settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
-
+const float changeValue = 0.01f;
+float mixNum = 0.2f;
 int main()
 {
     // glfw: initialize and configure
@@ -48,7 +49,7 @@ int main()
 
     // build and compile our shader program
     // ------------------------------------
-    Shader ourShader("../opengl/Shader/shaders/141image.vs", "../opengl/Shader/shaders/141image2Other.fs");
+    Shader ourShader("../opengl/Shader/shaders/141image.vs", "../opengl/Shader/shaders/141image2Control.fs");
     stbi_set_flip_vertically_on_load(true);
     unsigned int texture1;
     glGenTextures(1, &texture1);
@@ -156,13 +157,14 @@ int main()
         // ------
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        // be sure to activate the shader before any calls to glUniform
+        ourShader.use();
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture1);
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture2);
-        // be sure to activate the shader before any calls to glUniform
-        ourShader.use();
-
+        ourShader.setFloat("mixNum", mixNum);
         // render the triangle
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
@@ -189,6 +191,10 @@ void processInput(GLFWwindow *window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+        mixNum += changeValue;
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+        mixNum -= changeValue;
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
