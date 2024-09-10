@@ -162,9 +162,11 @@ int main()
     glEnable(GL_DEPTH_TEST);
     unsigned int diffuseMap = loadTexture("../image/container2.png");
     unsigned int specularMap = loadTexture("../image/container2_specular.png");
+    unsigned int emitMap = loadTexture("../image/matrix.jpg");
     ourShader.use();
     ourShader.setInt("material.diffuse", 0);
     ourShader.setInt("material.specular", 1);
+    ourShader.setInt("emitLight", 2);
 
     // render loop
     // -----------
@@ -229,6 +231,8 @@ int main()
         glBindTexture(GL_TEXTURE_2D, diffuseMap);
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, specularMap);
+        glActiveTexture(GL_TEXTURE2);
+        glBindTexture(GL_TEXTURE_2D, emitMap);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
 
