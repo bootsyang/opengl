@@ -162,7 +162,6 @@ int main()
     ourShader.use();
     ourShader.setInt("material.diffuse", 0);
     ourShader.setInt("material.specular", 1);
-    ourShader.setInt("emitLight", 2);
 
     // render loop
     // -----------
@@ -190,20 +189,26 @@ int main()
 
         // light properties
         ourShader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
-        ourShader.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f); // 将光照调暗了一些以搭配场景
+        ourShader.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
         ourShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+
+        // material properties
+        ourShader.setFloat("material.shininess", 64.0f);
 
         // view/projection transformations
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = camera.GetViewMatrix();
+        ourShader.setMat4("projection", projection);
+        ourShader.setMat4("view", view);
+
         // world transformation
         glm::mat4 model = glm::mat4(1.0f);
-        ourShader.setMat4("model",model);
-        ourShader.setMat4("view",view);
-        ourShader.setMat4("projection",projection);
+        ourShader.setMat4("model", model);
+
         // bind diffuse map
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, diffuseMap);
+        // bind specular map
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, specularMap);
 
@@ -214,14 +219,14 @@ int main()
 
         // also draw the lamp object
         lightShader.use();
-
+        lightShader.setMat4("projection", projection);
+        lightShader.setMat4("view", view);
         model = glm::mat4(1.0f);
         model = glm::translate(model, lightPos);
         model = glm::scale(model, glm::vec3(0.2f)); // a smaller cube
-		lightShader.setMat4("model",model);
-		lightShader.setMat4("view",view);
-		lightShader.setMat4("projection",projection);
+        lightShader.setMat4("model", model);
 
+        glBindVertexArray(lightVAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
 
